@@ -4,11 +4,13 @@ const app = express();
 require("dotenv").config();
 require("colors");
 
+
+// connect to database
 connectDB();
 
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
+app.use(express.json());
+
+app.use("/api/auth", require("./routes/authRouter"));
 
 // app post listening
 const PORT = process.env.PORT || 8000;
