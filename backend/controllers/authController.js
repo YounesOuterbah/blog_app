@@ -48,17 +48,17 @@ const loginUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Email Or Password Is Incorrect" });
   }
 
-  const token = generateToken(userExist._id);
+  const token = generateToken({ id: userExist._id, isAdmin: userExist.isAdmin });
 
-  res.json({ message: `welcome back ${userExist.username} your token is ${token}` });
+  res.json(token);
 });
 
 // generate Token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
+function generateToken(obj) {
+  return jwt.sign(obj, process.env.JWT_SECRET_KEY, {
     expiresIn: "30d",
   });
-};
+}
 
 module.exports = {
   registerUser,
