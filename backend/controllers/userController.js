@@ -1,20 +1,58 @@
 const asyncHandler = require("express-async-handler");
-const { User } = require("../models/User");
+const { User, validateUpdateUser } = require("../models/User");
+const bcrypt = require("bcrypt");
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  if (!req.user.isAdmin) {
-    return res.status(403).json({ message: "not allowed, only admin" });
-  }
-
   const users = await User.find();
   res.status(200).json(users);
 });
 
+const getUsersCount = asyncHandler(async (req, res) => {
+  const count = await User.countDocuments();
+  res.status(200).json(count);
+});
+
 const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findById();
+  const user = await User.findById(req.params.id).select("-password");
+
+  if (!user) {
+    res.status(400).json({ message: "user not found" });
+  }
+
+  res.status(200).json(user);
+});
+
+const updateUser = asyncHandler(async (req, res) => {
+  const { error } = validateUpdateUser(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
+  const { username, password, bio } = req.body;
+
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        username,
+        password,
+        bio,
+      },
+    },
+    { new: true }
+  ).select("-password");
+
+  res.status(200).json(updatedUser);
 });
 
 module.exports = {
   getAllUsers,
+  getUsersCount,
   getUser,
+  updateUser,
 };
