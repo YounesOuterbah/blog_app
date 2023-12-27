@@ -6,11 +6,13 @@ const {
   updateUser,
   getUsersCount,
   profilePictureUpload,
+  deleteUserProfile,
 } = require("../controllers/userController");
 const {
   verifyTokenAndAdmin,
   verifyTokenOnlyUser,
   verifyToken,
+  verifyTokenAndAuthorization,
 } = require("../middlewares/verifyToken");
 const { validateObjectID } = require("../middlewares/validateObjectID");
 const pictureUpload = require("../middlewares/pictureUpload");
@@ -22,7 +24,8 @@ router.post("/all/upload", verifyToken, pictureUpload.single("image"), profilePi
 router
   .route("/all/:id")
   .get(validateObjectID, getUser)
-  .put(validateObjectID, verifyTokenOnlyUser, updateUser);
+  .put(validateObjectID, verifyTokenOnlyUser, updateUser)
+  .delete(validateObjectID, verifyTokenAndAuthorization, deleteUserProfile);
 
 router.get("/count", verifyTokenAndAdmin, getUsersCount);
 

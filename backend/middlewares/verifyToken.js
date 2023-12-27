@@ -38,9 +38,20 @@ function verifyTokenOnlyUser(req, res, next) {
   });
 }
 
+function verifyTokenAndAuthorization(req, res, next) {
+  verifyToken(req, res, () => {
+    if (req.user.id === req.params.id || req.user.isAdmin) {
+      next();
+    } else {
+      return res.status(403).json({ message: "not allowed, only User or Admin" });
+    }
+  });
+}
+
 module.exports = {
   verifyToken,
   verifyTokenAndAdmin,
   verifyTokenOnlyUser,
   verifyTokenOnlyUser,
+  verifyTokenAndAuthorization,
 };

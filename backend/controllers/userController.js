@@ -83,10 +83,25 @@ const profilePictureUpload = asyncHandler(async (req, res) => {
   fs.unlinkSync(imagePath);
 });
 
+const deleteUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(400).json({ message: "user not found" });
+  }
+
+  await cloudinaryRemoveImage(user.profilePicture.publicId);
+
+  await User.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ message: "Your Account Has Been Deleted" });
+});
+
 module.exports = {
   getAllUsers,
   getUsersCount,
   getUser,
   updateUser,
   profilePictureUpload,
+  deleteUserProfile,
 };
