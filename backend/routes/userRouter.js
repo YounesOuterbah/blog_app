@@ -5,15 +5,25 @@ const {
   getUser,
   updateUser,
   getUsersCount,
+  profilePictureUpload,
 } = require("../controllers/userController");
-const { verifyTokenAndAdmin, verifyTokenOnlyUser } = require("../middlewares/verifyToken");
+const {
+  verifyTokenAndAdmin,
+  verifyTokenOnlyUser,
+  verifyToken,
+} = require("../middlewares/verifyToken");
 const { validateObjectID } = require("../middlewares/validateObjectID");
+const pictureUpload = require("../middlewares/pictureUpload");
 
 router.get("/all", verifyTokenAndAdmin, getAllUsers);
-router.get("/count", verifyTokenAndAdmin, getUsersCount);
+
+router.post("/all/upload", verifyToken, pictureUpload.single("image"), profilePictureUpload);
+
 router
   .route("/all/:id")
   .get(validateObjectID, getUser)
   .put(validateObjectID, verifyTokenOnlyUser, updateUser);
+
+router.get("/count", verifyTokenAndAdmin, getUsersCount);
 
 module.exports = router;
