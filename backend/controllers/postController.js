@@ -3,6 +3,7 @@ const path = require("path");
 const asyncHandler = require("express-async-handler");
 const { Post, validateCreatePost, validateUpdatePost } = require("../models/Post");
 const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
+const { Comment } = require("../models/Comment");
 
 const getPosts = asyncHandler(async (req, res) => {
   const POST_PER_PAGE = 3;
@@ -24,7 +25,9 @@ const getPosts = asyncHandler(async (req, res) => {
 });
 
 const getPost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id).populate("user", ["-password"]);
+  const post = await Post.findById(req.params.id)
+    .populate("user", ["-password"])
+    .populate("comments");
 
   if (!post) {
     res.status(400).json({ message: "post not found" });
@@ -83,12 +86,12 @@ const deletePost = asyncHandler(async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
     await cloudinaryRemoveImage(post.img.publicId);
 
-    // @TODO delete all comments NEXT
+    await Comment.deleteMany({ postId: post._id });
+
+    res.status(200).json({ message: "post has been deleted sccussefuly" });
   } else {
     return res.status(403).json({ message: "access denied, forbidden" });
   }
-
-  res.status(200).json({ message: "post has been deleted sccussefuly" });
 });
 
 const updatePost = asyncHandler(async (req, res) => {

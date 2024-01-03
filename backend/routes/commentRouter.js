@@ -10,6 +10,9 @@ const {
 const { validateObjectID } = require("../middlewares/validateObjectID");
 
 router.route("/").get(getComments).post(verifyToken, createComment);
-router.route("/:id").delete(validateObjectID, verifyToken, deleteComment).put(updateComment);
+router
+  .route("/:id")
+  .delete(validateObjectID, verifyToken, deleteComment)
+  .put(validateObjectID, verifyToken, updateComment);
 
 module.exports = router;

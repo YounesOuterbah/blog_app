@@ -2,8 +2,14 @@ const asyncHandler = require("express-async-handler");
 const { User, validateUpdateUser } = require("../models/User");
 const bcrypt = require("bcrypt");
 const path = require("path");
-const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
+const {
+  cloudinaryUploadImage,
+  cloudinaryRemoveImage,
+  cloudinaryRemoveAllImg,
+} = require("../utils/cloudinary");
 const fs = require("fs");
+const { Comment } = require("../models/Comment");
+const { Post } = require("../models/Post");
 
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
@@ -90,7 +96,18 @@ const deleteUserProfile = asyncHandler(async (req, res) => {
     res.status(400).json({ message: "user not found" });
   }
 
+  const posts = await Post.find({ user: user._id });
+
+  const publicIDs = posts?.map((post) => post.img.publicId);
+
+  if (publicIDs?.length > 0) {
+    await cloudinaryRemoveAllImg(publicIDs);
+  }
+
   await cloudinaryRemoveImage(user.profilePicture.publicId);
+
+  await Post.deleteMany({ user: user._id });
+  await Comment.deleteMany({ user: user._id });
 
   await User.findByIdAndDelete(req.params.id);
 
