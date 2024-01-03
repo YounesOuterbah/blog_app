@@ -16,7 +16,7 @@ const getUsersCount = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select("-password");
+  const user = await User.findById(req.params.id).select("-password").populate("posts");
 
   if (!user) {
     res.status(400).json({ message: "user not found" });
