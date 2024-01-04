@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/db");
+const { errorHandler, notFound } = require("./middlewares/error");
 const app = express();
 require("dotenv").config();
 require("colors");
@@ -13,6 +14,9 @@ app.use("/api/auth", require("./routes/authRouter"));
 app.use("/api/user", require("./routes/userRouter"));
 app.use("/api/post", require("./routes/postRouter"));
 app.use("/api/comment", require("./routes/commentRouter"));
+
+app.use(notFound);
+app.use(errorHandler);
 
 // app post listening
 const PORT = process.env.PORT || 8000;
