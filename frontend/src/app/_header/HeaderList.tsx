@@ -17,16 +17,16 @@ export default function HeaderList() {
         ) : (
           <FaBars className="cursor-pointer md:hidden mr-4" onClick={handelClick} />
         )}
-        Medium
+        Middle
       </div>
       <ul className={`items-center hidden md:flex`}>
-        <Link href="/home" className="mr-2 cursor-pointer">
+        <Link href="/" className="mr-2 cursor-pointer">
           Home
         </Link>
         <Link href="/posts" className="mr-2 cursor-pointer">
           Posts
         </Link>
-        <Link href="/createPost" className="mr-2 cursor-pointer">
+        <Link href="/posts/createPost" className="mr-2 cursor-pointer">
           Create
         </Link>
         <Link href="/admin" className="cursor-pointer">
@@ -38,7 +38,7 @@ export default function HeaderList() {
           <li className="cursor-pointer my-4 bg-red-600 hover:bg-red-800 duration-300 p-2 rounded">
             <Link
               className="block w-full"
-              href="/home"
+              href="/"
               onClick={() => {
                 setToggle(!toggle);
               }}
@@ -60,7 +60,7 @@ export default function HeaderList() {
           <li className="cursor-pointer my-4 bg-red-600 hover:bg-red-800 duration-300 p-2 rounded">
             <Link
               className="block w-full"
-              href="/createPost"
+              href="/posts/createPost"
               onClick={() => {
                 setToggle(!toggle);
               }}
