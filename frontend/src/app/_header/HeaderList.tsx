@@ -34,7 +34,7 @@ export default function HeaderList() {
         </Link>
       </ul>
       {toggle && (
-        <ul className={`items-center absolute px-8 md:hidden bg-red-400 top-[44px] left-0 w-full`}>
+        <ul className={`items-center absolute px-8 md:hidden bg-red-400 top-[60px] left-0 w-full`}>
           <li className="cursor-pointer my-4 bg-red-600 hover:bg-red-800 duration-300 p-2 rounded">
             <Link
               className="block w-full"
