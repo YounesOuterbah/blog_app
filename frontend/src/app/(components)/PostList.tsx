@@ -12,7 +12,7 @@ export default function PostList() {
             <p className="text-xs">{post.user.username} ·</p>
             <span className="ml-2 text-[#6d6d6d] text-[11px]">{post.createdAt}</span>
           </div>
-          <div className="flex justify-between gap-x-16 cursor-pointer">
+          <div className="flex-col-reverse md:flex-row flex justify-between gap-x-16 cursor-pointer">
             <div className="txt">
               <h3 className="font-bold mb-1">{post.title}</h3>
               <p className="leading-6 line-clamp-3 font-serif text-[#242424]">
@@ -26,7 +26,7 @@ export default function PostList() {
                 <MdOutlineBookmarkAdd className="text-2xl text-gray-400 hover:text-black duration-300" />
               </div>
             </div>
-            <img className="max-w-[20%] object-cover" src={post.image} alt={post.title} />
+            <img className="mb-2 md:max-w-[20%] object-cover" src={post.image} alt={post.title} />
           </div>
         </div>
       ))}

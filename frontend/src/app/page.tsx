@@ -22,7 +22,7 @@ export default function Home() {
     <>
       <div className="home pt-8">
         <div className="container flex flex-row">
-          <div className="basis-9/12">
+          <div className="md:basis-9/12">
             <ul className="controller flex items-center border-b-2 text-sm">
               {items.map((item, index) => (
                 <li
@@ -40,7 +40,7 @@ export default function Home() {
               <PostList />
             </div>
           </div>
-          <div className="side basis-1/4">
+          <div className="side hidden md:basis-1/4 md:flex">
             <PostSidebar />
           </div>
         </div>
