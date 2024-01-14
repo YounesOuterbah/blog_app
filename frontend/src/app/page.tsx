@@ -23,6 +23,8 @@ export default function Home() {
       <div className="home pt-8">
         <div className="container flex flex-row">
           <div className="md:basis-9/12">
+            {/*
+            controller for topics to choose between 
             <ul className="controller flex items-center border-b-2 text-sm">
               {items.map((item, index) => (
                 <li
@@ -36,6 +38,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+            */}
             <div className="posts mt-12">
               <PostList />
             </div>

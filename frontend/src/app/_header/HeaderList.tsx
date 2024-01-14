@@ -5,7 +5,7 @@ import { FaBars } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
 export default function HeaderList() {
-  const [toggle, setToggle] = useState<boolean>(true);
+  const [toggle, setToggle] = useState<boolean>(false);
   function handelClick() {
     setToggle(!toggle);
   }
