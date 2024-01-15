@@ -12,11 +12,13 @@ export default function Home() {
     "Programming",
   ]);
 
-  const [selected, setSelected] = useState<string>("");
 
-  const handelClick = (index: number) => {
-    setSelected(items[index]);
-  };
+  // @CODE for topics controller
+  // const [selected, setSelected] = useState<string>("");
+
+  // const handelClick = (index: number) => {
+  //   setSelected(items[index]);
+  // };
 
   return (
     <>

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { posts } from "../dummyData";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
 
@@ -6,7 +7,7 @@ export default function PostList() {
   return (
     <>
       {posts.map((post) => (
-        <div key={post._id} className="p-4 rounded border-b mb-10">
+        <Link href={`posts/${post._id}`} key={post._id} className="p-4 rounded border-b mb-10">
           <div className="auth flex items-center mb-2 cursor-pointer">
             <img src={post.user.image} className="rounded-full w-6 mr-2" alt={post.user.username} />
             <p className="text-xs">{post.user.username} ·</p>
@@ -28,7 +29,7 @@ export default function PostList() {
             </div>
             <img className="mb-2 md:max-w-[20%] object-cover" src={post.image} alt={post.title} />
           </div>
-        </div>
+        </Link>
       ))}
     </>
   );
