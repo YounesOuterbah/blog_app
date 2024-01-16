@@ -8,6 +8,7 @@ import { BsFillTrash3Fill } from "react-icons/bs";
 import { MdOutlineBookmarkAdd, MdIosShare } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
+import CommentList from "@/app/(components)/CommentList";
 
 export default function page() {
   const { id } = useParams();
@@ -93,6 +94,7 @@ export default function page() {
           <FaRegEdit className="text-emerald-600" />
           <BsFillTrash3Fill className="text-red-600" />
         </div>
+        <CommentList />
       </div>
     </>
   );
