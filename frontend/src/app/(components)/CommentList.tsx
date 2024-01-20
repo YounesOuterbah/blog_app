@@ -1,21 +1,47 @@
 import { useState } from "react";
-import AddComment from "./AddComment";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
+import AddComment from "./AddComment";
 
-export default function CommentList() {
+interface Comment {
+  id: number;
+  body: string;
+}
+
+interface commentProps {
+  setCommentToggle: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function CommentList({ setCommentToggle }: commentProps) {
+  const commentArray: Comment[] = [
+    { id: 1, body: "hi am comment 1" },
+    { id: 2, body: "hi am comment 2" },
+    { id: 3, body: "hi am comment 3" },
+  ];
+
   const [toggle, setToggle] = useState<boolean>(true);
+  const [comments, setComments] = useState(commentArray);
+  const [editComment, setEditComment] = useState<number | null>(null);
+
+  const handleCommentEdit = (commentId: number, newText: string) => {
+    setComments((prevComments) =>
+      prevComments.map((prevComment) =>
+        prevComment.id === commentId ? { ...prevComment, body: newText } : prevComment
+      )
+    );
+  };
+
   return (
     <>
       <div
         className={`${
           toggle ? "overlay fixed w-full h-full bg-[#00000036] top-0 left-0" : "hidden"
-        } `}
+        }`}
       ></div>
       <div
         className={`${
           toggle
-            ? "bg-white p-4 shadow-lg fixed h-full top-0 right-0 w-[30%] overflow-y-scroll"
+            ? "bg-white p-4 shadow-lg fixed h-full top-0 right-0 w-full lg:w-[30%] overflow-y-scroll"
             : "hidden"
         }`}
       >
@@ -23,15 +49,15 @@ export default function CommentList() {
           <div className="text-xl mb-4 font-bold">
             Responses <span>(2)</span>
           </div>
-          <IoClose className="text-2xl" onClick={() => setToggle(!toggle)} />
+          <IoClose className="text-2xl cursor-pointer" onClick={() => setCommentToggle(false)} />
         </div>
         <AddComment />
         <hr />
         <div className="comments-wrapper my-6">
-          {[1, 2].map((comment) => (
-            <div key={comment} className="mb-6 border-b pb-6">
+          {comments.map((comment) => (
+            <div key={comment.id} className="mb-6 border-b pb-6">
               <div className="flex justify-between items-center">
-                <div className="flex items-center">
+                <div className="flex items-center justify-between">
                   <img
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUCxe7s30cFmp2jXTxlYKqUo79h2S0re4C0g&usqp=CAU"
                     alt="profile img"
@@ -42,12 +68,25 @@ export default function CommentList() {
                     <div className="text-sm text-[#969696]">about 2 months ago</div>
                   </div>
                 </div>
-                {/* @TODO delete and edit method */}
-                <HiDotsHorizontal />
+                <HiDotsHorizontal
+                  className="cursor-pointer"
+                  onClick={() => setEditComment(comment.id)}
+                />
               </div>
-              <p className="mt-4">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, et?
+              <p className="mt-2 ml-2" onClick={() => console.log(comment.id, comment.body)}>
+                {comment.body}
               </p>
+              {editComment === comment.id && (
+                <>
+                  <input
+                    type="text"
+                    className="border"
+                    value={comment.body}
+                    onChange={(e) => handleCommentEdit(comment.id, e.target.value)}
+                  />
+                  <button>Edit</button>
+                </>
+              )}
             </div>
           ))}
         </div>

@@ -2,18 +2,21 @@
 import Link from "next/link";
 import { posts } from "@/app/dummyData";
 import { useParams } from "next/navigation";
-import { FaImage, FaRegEdit } from "react-icons/fa";
+import { FaImage, FaRegEdit, FaRegComment } from "react-icons/fa";
 import { PiHandsClapping } from "react-icons/pi";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { MdOutlineBookmarkAdd, MdIosShare } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import CommentList from "@/app/(components)/CommentList";
+import UpdatePostModal from "./UpdatePostModal";
 
 export default function page() {
   const { id } = useParams();
   const post = posts.find((p) => p._id === +id);
 
+  const [toggle, setToggle] = useState<boolean>(false);
+  const [commentToggle, setCommentToggle] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
 
   const updateImageSubmitHandler = (e: React.FormEvent) => {
@@ -22,7 +25,7 @@ export default function page() {
   };
   return (
     <>
-      <div className="container flex flex-col items-center w-[60%] py-20">
+      <div className="container flex flex-col items-center w-full md:w-[60%] py-20">
         <ToastContainer theme="colored" />
         <h1 className="font-bold text-4xl mr-auto mb-6">{post?.title}</h1>
         <div className="profile flex mb-8 mr-auto">
@@ -44,16 +47,22 @@ export default function page() {
         </div>
         <div className="info border-t border-b py-2 w-full flex items-center justify-between">
           <div className="flex items-center text-gray-500">
-            <PiHandsClapping className="text-2xl text-gray-400 hover:text-black duration-300 hover:cursor-pointer" />
-            <span className="ml-2">{post?.likes.length}</span>
+            <abbr title="likes">
+              <PiHandsClapping className="text-2xl text-gray-400 hover:text-black duration-300 hover:cursor-pointer" />
+            </abbr>
+            <span className="ml-1">{post?.likes.length}</span>
+            <FaRegComment
+              onClick={() => setCommentToggle(!commentToggle)}
+              className="ml-4 text-xl text-gray-400 hover:text-black duration-300 hover:cursor-pointer"
+            />
           </div>
-          {/* @TODO add comment feature 
-          import { TfiThought } from "react-icons/tfi";
-          <TfiThought />
-          <span>{post?.comment}</span> */}
           <div className="flex items-center">
-            <MdIosShare className="text-2xl text-gray-400 mr-4 hover:text-black duration-300 hover:cursor-pointer" />
-            <MdOutlineBookmarkAdd className="text-2xl text-gray-400 hover:text-black duration-300 hover:cursor-pointer" />
+            <abbr title="share">
+              <MdIosShare className="text-2xl text-gray-400 mr-4 hover:text-black duration-300 hover:cursor-pointer" />
+            </abbr>
+            <abbr title="save">
+              <MdOutlineBookmarkAdd className="text-2xl text-gray-400 hover:text-black duration-300 hover:cursor-pointer" />
+            </abbr>
           </div>
         </div>
         <div className="img-wrapper mt-12">
@@ -91,10 +100,11 @@ export default function page() {
           rem iste. Ab, ullam. Quas, cum eum.
         </p>
         <div className="flex ml-auto mt-4 text-xl">
-          <FaRegEdit className="text-emerald-600" />
+          <FaRegEdit className="text-emerald-600" onClick={() => setToggle(!toggle)} />
           <BsFillTrash3Fill className="text-red-600" />
         </div>
-        <CommentList />
+        {commentToggle && <CommentList setCommentToggle={setCommentToggle} />}
+        <UpdatePostModal toggle={toggle} setToggle={setToggle} post={post} />
       </div>
     </>
   );

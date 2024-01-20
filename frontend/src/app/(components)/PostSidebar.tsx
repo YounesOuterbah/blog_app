@@ -1,6 +1,7 @@
 import Image from "next/image";
 import subscribeIMG from "/public/images/Email-Icon.png";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function PostSidebar() {
   const [categoryArr, setCategoryArr] = useState<string[]>([
@@ -18,9 +19,13 @@ export default function PostSidebar() {
         <h1 className="p-2 font-bold">Recomended topics</h1>
         <div className="boxs flex flex-wrap">
           {categoryArr.map((item, key) => (
-            <div key={key} className="bg-[#f2f2f2] rounded-full text-sm cursor-pointer p-2 m-1">
+            <Link
+              href={`/categories/${item}`}
+              key={key}
+              className="bg-[#f2f2f2] rounded-full text-sm cursor-pointer p-2 m-1"
+            >
               {item}
-            </div>
+            </Link>
           ))}
         </div>
       </div>
